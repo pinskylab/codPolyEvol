@@ -3,16 +3,16 @@ library(ggpubr)
 library(RColorBrewer)
 cols=brewer.pal(name="Set1",n=5)
 
-##### K70000
+##### load in the datasets for each migration scenario and calculate ConvCor statistics
 
 covdf_m2n=data.frame(m=rep(NA,20),q=rep(NA,20),it=rep(NA,20),Can40Lof11=rep(NA,20),Can40Lof14=rep(NA,20),Lof11Lof14=rep(NA,20),Can40Lof1114=rep(NA,20))
 
 for (i in 1:20){
-  Can13file=paste("slimulation/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
-  Can40file=paste("slimulation/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
-  Lof07file=paste("slimulation/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
-  Lof11file=paste("slimulation/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
-  Lof14file=paste("slimulation/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
+  Can13file=paste("slim_outputs/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
+  Can40file=paste("slim_outputs/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
+  Lof07file=paste("slim_outputs/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
+  Lof11file=paste("slim_outputs/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
+  Lof14file=paste("slim_outputs/slimout_afreqs/K7000_m1e-2_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
   Can13_afreqs=read.table(Can13file,header=F)
   Can40_afreqs=read.table(Can40file,header=F)
   Lof07_afreqs=read.table(Lof07file,header=F)
@@ -39,11 +39,11 @@ for (i in 1:20){
 covdf_m3n=data.frame(m=rep(NA,20),q=rep(NA,20),it=rep(NA,20),Can40Lof11=rep(NA,20),Can40Lof14=rep(NA,20),Lof11Lof14=rep(NA,20),Can40Lof1114=rep(NA,20))
 
 for (i in 1:20){
-  Can13file=paste("slimulation/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
-  Can40file=paste("slimulation/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
-  Lof07file=paste("slimulation/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
-  Lof11file=paste("slimulation/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
-  Lof14file=paste("slimulation/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
+  Can13file=paste("slim_outputs/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
+  Can40file=paste("slim_outputs/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
+  Lof07file=paste("slim_outputs/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
+  Lof11file=paste("slim_outputs/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
+  Lof14file=paste("slim_outputs/slimout_afreqs/K7000_m1e-3_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
   Can13_afreqs=read.table(Can13file,header=F)
   Can40_afreqs=read.table(Can40file,header=F)
   Lof07_afreqs=read.table(Lof07file,header=F)
@@ -70,11 +70,11 @@ for (i in 1:20){
 covdf_m4n=data.frame(m=rep(NA,20),q=rep(NA,20),it=rep(NA,20),Can40Lof11=rep(NA,20),Can40Lof14=rep(NA,20),Lof11Lof14=rep(NA,20),Can40Lof1114=rep(NA,20))
 
 for (i in 1:20){
-  Can13file=paste("slimulation/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
-  Can40file=paste("slimulation/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
-  Lof07file=paste("slimulation/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
-  Lof11file=paste("slimulation/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
-  Lof14file=paste("slimulation/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
+  Can13file=paste("slim_outputs/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
+  Can40file=paste("slim_outputs/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
+  Lof07file=paste("slim_outputs/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
+  Lof11file=paste("slim_outputs/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
+  Lof14file=paste("slim_outputs/slimout_afreqs/K7000_m1e-4_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
   Can13_afreqs=read.table(Can13file,header=F)
   Can40_afreqs=read.table(Can40file,header=F)
   Lof07_afreqs=read.table(Lof07file,header=F)
@@ -101,11 +101,11 @@ for (i in 1:20){
 covdf_m5n=data.frame(m=rep(NA,20),q=rep(NA,20),it=rep(NA,20),Can40Lof11=rep(NA,20),Can40Lof14=rep(NA,20),Lof11Lof14=rep(NA,20),Can40Lof1114=rep(NA,20))
 
 for (i in 1:20){
-  Can13file=paste("slimulation/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
-  Can40file=paste("slimulation/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
-  Lof07file=paste("slimulation/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
-  Lof11file=paste("slimulation/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
-  Lof14file=paste("slimulation/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
+  Can13file=paste("slim_outputs/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
+  Can40file=paste("slim_outputs/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
+  Lof07file=paste("slim_outputs/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
+  Lof11file=paste("slim_outputs/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
+  Lof14file=paste("slim_outputs/slimout_afreqs/K7000_m1e-5_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
   Can13_afreqs=read.table(Can13file,header=F)
   Can40_afreqs=read.table(Can40file,header=F)
   Lof07_afreqs=read.table(Lof07file,header=F)
@@ -132,11 +132,11 @@ for (i in 1:20){
 covdf_m6n=data.frame(m=rep(NA,20),q=rep(NA,20),it=rep(NA,20),Can40Lof11=rep(NA,20),Can40Lof14=rep(NA,20),Lof11Lof14=rep(NA,20),Can40Lof1114=rep(NA,20))
 
 for (i in 1:20){
-  Can13file=paste("slimulation/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
-  Can40file=paste("slimulation/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
-  Lof07file=paste("slimulation/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
-  Lof11file=paste("slimulation/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
-  Lof14file=paste("slimulation/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
+  Can13file=paste("slim_outputs/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Can13.afreq",sep="")
+  Can40file=paste("slim_outputs/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Can40.afreq",sep="")
+  Lof07file=paste("slim_outputs/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Lof07.afreq",sep="")
+  Lof11file=paste("slim_outputs/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Lof11.afreq",sep="")
+  Lof14file=paste("slim_outputs/slimout_afreqs/K7000_m1e-6_neutral_maf/i",i,"_maf.Lof14.afreq",sep="")
   Can13_afreqs=read.table(Can13file,header=F)
   Can40_afreqs=read.table(Can40file,header=F)
   Lof07_afreqs=read.table(Lof07file,header=F)
@@ -159,6 +159,8 @@ for (i in 1:20){
   covdf_m6n$Can40Lof1114[i]=cov(FreqChange$Can,FreqChange$Lof1114)/sqrt(var(FreqChange$Can)*var(FreqChange$Lof1114))
 }
 
+### combine migration scenarios
+
 covdf_n=rbind(covdf_m2n,covdf_m3n,covdf_m4n,covdf_m5n,covdf_m6n)
 
 plot(log10(covdf_n$m),covdf_n$Can40Lof11,xlab="Log10(Migration Rate)",ylab="Convergence Correlation",main="Canada 1940-2013 vs Norway 1907-2011")
@@ -169,7 +171,11 @@ plot(log10(covdf_n$m),covdf_n$Lof11Lof14,xlab="Log10(Migration Rate)",ylab="Conv
 mean(covdf_n$Can40Lof11)
 mean(covdf_n$Can40Lof14)
 
+## migration on log scale
+
 covdf_n$logm=as.factor(log10(covdf_n$m))
+
+## plot convcor
 
 convcor1plot=ggplot(data=covdf_n,aes(x=logm,y=Can40Lof11)) + 
   geom_boxplot(color=cols[2]) +
