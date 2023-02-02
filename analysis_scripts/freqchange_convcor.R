@@ -1,17 +1,18 @@
 library(tidyverse)
 
-Can40_afreqs=read.table("data/Can40Loci_afreqs/plink2.Can40.afreq",header=T)
-Can13_afreqs=read.table("data/Can40Loci_afreqs/plink2.Can13.afreq",header=T)
+## read in data and calculate frequency change
+
+Can40_afreqs=read.table("empirical_data/Can40Loci_afreqs/plink2.Can40.afreq",header=T)
+Can13_afreqs=read.table("empirical_data/Can40Loci_afreqs/plink2.Can13.afreq",header=T)
 
 Can40_afreqs$ContFreq=Can13_afreqs$ALT_FREQS
 Can40_afreqs$FreqChange=Can40_afreqs$ContFreq-Can40_afreqs$ALT_FREQS
 
 Can40_afreqs$AbsFreqChange=abs(Can40_afreqs$ContFreq-Can40_afreqs$ALT_FREQS)
 
-Lof07_afreqs=read.table("data/Can40Loci_afreqs/plink2.Lof07.afreq",header=T)
-Lof11_afreqs=read.table("data/Can40Loci_afreqs/plink2.Lof11.afreq",header=T)
-Lof14_afreqs=read.table("data/Can40Loci_afreqs/plink2.Lof14.afreq",header=T)
-
+Lof07_afreqs=read.table("empirical_data/Can40Loci_afreqs/plink2.Lof07.afreq",header=T)
+Lof11_afreqs=read.table("empirical_data/Can40Loci_afreqs/plink2.Lof11.afreq",header=T)
+Lof14_afreqs=read.table("empirical_data/Can40Loci_afreqs/plink2.Lof14.afreq",header=T)
 
 Lof07_afreqs$Freq11=Lof11_afreqs$ALT_FREQS
 Lof07_afreqs$Freq14=Lof14_afreqs$ALT_FREQS
@@ -19,7 +20,7 @@ Lof07_afreqs$Freq14=Lof14_afreqs$ALT_FREQS
 Lof07_afreqs$FreqChange11=Lof07_afreqs$Freq11-Lof07_afreqs$ALT_FREQS
 Lof07_afreqs$FreqChange14=Lof07_afreqs$Freq14-Lof07_afreqs$ALT_FREQS
 
-### change covariance - Canada vs Norways!
+### calculate change covariance (ConvCor1 + 2) - Canada vs Norways!
 
 Can40_afreqs$FreqChange
 Lof07_afreqs$FreqChange11
@@ -38,7 +39,7 @@ cor_all=(cov(covdf$Can40_afreqs.FreqChange,covdf$Lof07_afreqs.FreqChange11)+cov(
 cor_all=(cov(covdf$Can40_afreqs.FreqChange,covdf$Lof07_afreqs.FreqChange11)+cov(covdf$Can40_afreqs.FreqChange,covdf$Lof07_afreqs.FreqChange14))/(sqrt(var(covdf$Can40_afreqs.FreqChange)*var(covdf$Lof07_afreqs.FreqChange11))+sqrt(var(covdf$Can40_afreqs.FreqChange)*var(covdf$Lof07_afreqs.FreqChange14)))
 
 
-### by LG
+### calculate covariance by linkage group
 LGs=unique(covdf$Can40_afreqs.CHROM)
 
 cordf=data.frame(matrix(ncol=3,nrow=23))
@@ -59,7 +60,7 @@ abline(v=seq(0,23)+0.5,lty=2,lwd=0.5)
 abline(h=0,lty=2)
 legend(x=8,y=-0.05,legend=c("Canada-Norway 2011","Canada-Norway 2014"),col=c("blue","green"),pch=c(19,19))
 
-### change covariance - Norway07-11 vs Norway01-14!
+### calculate change covariance (ConvCor4) - Norway07-11 vs Norway01-14!
 
 cor_Lof11_Lof14=cov(covdf$Lof07_afreqs.FreqChange11,covdf$Lof07_afreqs.FreqChange14)/sqrt(var(covdf$Lof07_afreqs.FreqChange11)*var(covdf$Lof07_afreqs.FreqChange14))
 
@@ -81,7 +82,7 @@ abline(v=seq(0,23)+0.5,lty=2,lwd=0.5)
 abline(h=0,lty=2)
 legend(x=8,y=-0.05,legend=c("Norway 2011 - Norway 2014"),col=c("purple"),pch=c(19,19))
 
-### change covariance - Norway11-14 vs Canada!
+### change covariance (ConvCor4)- Norway11-14 vs Canada!
 
 Lof07_afreqs$FreqChange1114=Lof07_afreqs$Freq14-Lof07_afreqs$Freq11
 
@@ -163,7 +164,7 @@ lines(x=c(0.5,23.5),y=c(0,0),lty=2)
 legend("topright",inset=c(-0.2,0),bty="n",legend=c(expression('ConvCor'[1]),expression('ConvCor'[2]),expression('ConvCor'[3]),expression('ConvCor'[4])),col=c(cols[2],cols[3],cols[4],cols[5]),pch=c(19,19,19,19),cex=1)
 axis(side=1,at=seq(1,23),label=c(LGs[1:23]))
 
-### se's over linkage groups
+### standard errors over linkage groups
 se <- function(x) sqrt(var(x) / length(x))
 se(cordf1114$cor1114)
 se(cordf$cor11)
@@ -172,7 +173,7 @@ se(cordfCan1114$cor1114)
 
 ### within inversions? ###
 
-quals=read.table("data/Can40Loci_afreqs/out.lqual",header=T)
+quals=read.table("empirical_data/Can40Loci_afreqs/out.lqual",header=T)
 
 Can40_afreqs$POS=quals$POS
 Can40_LG1inv_afreqs=Can40_afreqs[which(Can40_afreqs$CHROM=="LG01" & Can40_afreqs$POS>9114741 & Can40_afreqs$POS<26192489),]
@@ -346,15 +347,15 @@ for (i in 1:100) {
 
 ##### SNPs in CDS
 
-Can40_CDS_afreqs=read.table("data/afreqs_Can40_gadmor2_CDS/plink2.Can40.afreq",header=T)
-Can13_CDS_afreqs=read.table("data/afreqs_Can40_gadmor2_CDS/plink2.Can13.afreq",header=T)
+Can40_CDS_afreqs=read.table("empirical_data/afreqs_Can40_gadmor2_CDS/plink2.Can40.afreq",header=T)
+Can13_CDS_afreqs=read.table("empirical_data/afreqs_Can40_gadmor2_CDS/plink2.Can13.afreq",header=T)
 Can40_CDS_afreqs$ContFreq=Can13_CDS_afreqs$ALT_FREQS
 Can40_CDS_afreqs$FreqChange=Can40_CDS_afreqs$ContFreq-Can40_CDS_afreqs$ALT_FREQS
 Can40_CDS_afreqs$AbsFreqChange=abs(Can40_CDS_afreqs$ContFreq-Can40_CDS_afreqs$ALT_FREQS)
 
-Lof07_CDS_afreqs=read.table("data/afreqs_Can40_gadmor2_CDS/plink2.Lof07.afreq",header=T)
-Lof11_CDS_afreqs=read.table("data/afreqs_Can40_gadmor2_CDS/plink2.Lof11.afreq",header=T)
-Lof14_CDS_afreqs=read.table("data/afreqs_Can40_gadmor2_CDS/plink2.Lof14.afreq",header=T)
+Lof07_CDS_afreqs=read.table("empirical_data/afreqs_Can40_gadmor2_CDS/plink2.Lof07.afreq",header=T)
+Lof11_CDS_afreqs=read.table("empirical_data/afreqs_Can40_gadmor2_CDS/plink2.Lof11.afreq",header=T)
+Lof14_CDS_afreqs=read.table("empirical_data/afreqs_Can40_gadmor2_CDS/plink2.Lof14.afreq",header=T)
 Lof07_CDS_afreqs$Freq11=Lof11_CDS_afreqs$ALT_FREQS
 Lof07_CDS_afreqs$Freq14=Lof14_CDS_afreqs$ALT_FREQS
 Lof07_CDS_afreqs$FreqChange11=Lof07_CDS_afreqs$Freq11-Lof07_CDS_afreqs$ALT_FREQS
@@ -530,15 +531,15 @@ text(x=0.5,y=0.25,labels="(b)",cex=1.5)
 #########################################
 
 
-Can40_afreqs=read.table("data/AllLoci_afreqs/plink2.Can40.afreq",header=T)
-Can13_afreqs=read.table("data/AllLoci_afreqs/plink2.Can13.afreq",header=T)
+Can40_afreqs=read.table("empirical_data/AllLoci_afreqs/plink2.Can40.afreq",header=T)
+Can13_afreqs=read.table("empirical_data/AllLoci_afreqs/plink2.Can13.afreq",header=T)
 
 Can40_afreqs$ContFreq=Can13_afreqs$ALT_FREQS
 Can40_afreqs$FreqChange=Can40_afreqs$ContFreq-Can40_afreqs$ALT_FREQS
 
-Lof07_afreqs=read.table("data/AllLoci_afreqs/plink2.Lof07.afreq",header=T)
-Lof11_afreqs=read.table("data/AllLoci_afreqs/plink2.Lof11.afreq",header=T)
-Lof14_afreqs=read.table("data/AllLoci_afreqs/plink2.Lof14.afreq",header=T)
+Lof07_afreqs=read.table("empirical_data/AllLoci_afreqs/plink2.Lof07.afreq",header=T)
+Lof11_afreqs=read.table("empirical_data/AllLoci_afreqs/plink2.Lof11.afreq",header=T)
+Lof14_afreqs=read.table("empirical_data/AllLoci_afreqs/plink2.Lof14.afreq",header=T)
 
 Lof07_afreqs$Freq11=Lof11_afreqs$ALT_FREQS
 Lof07_afreqs$Freq14=Lof14_afreqs$ALT_FREQS
@@ -697,7 +698,7 @@ se(cordfCan1114$cor1114)
 
 ### within inversions? ###
 
-quals=read.table("data/AllLoci_afreqs/out.lqual",header=T)
+quals=read.table("empirical_data/AllLoci_afreqs/out.lqual",header=T)
 
 Can40_afreqs$POS=quals$POS
 Can40_LG1inv_afreqs=Can40_afreqs[which(Can40_afreqs$CHROM=="LG01" & Can40_afreqs$POS>9114741 & Can40_afreqs$POS<26192489),]
@@ -871,15 +872,15 @@ for (i in 1:100) {
 
 ##### SNPs in CDS
 
-Can40_CDS_afreqs=read.table("data/afreqs_all_gadmor2_CDS/plink2.Can40.afreq",header=T)
-Can13_CDS_afreqs=read.table("data/afreqs_all_gadmor2_CDS/plink2.Can13.afreq",header=T)
+Can40_CDS_afreqs=read.table("empirical_data/afreqs_all_gadmor2_CDS/plink2.Can40.afreq",header=T)
+Can13_CDS_afreqs=read.table("empirical_data/afreqs_all_gadmor2_CDS/plink2.Can13.afreq",header=T)
 Can40_CDS_afreqs$ContFreq=Can13_CDS_afreqs$ALT_FREQS
 Can40_CDS_afreqs$FreqChange=Can40_CDS_afreqs$ContFreq-Can40_CDS_afreqs$ALT_FREQS
 Can40_CDS_afreqs$AbsFreqChange=abs(Can40_CDS_afreqs$ContFreq-Can40_CDS_afreqs$ALT_FREQS)
 
-Lof07_CDS_afreqs=read.table("data/afreqs_all_gadmor2_CDS/plink2.Lof07.afreq",header=T)
-Lof11_CDS_afreqs=read.table("data/afreqs_all_gadmor2_CDS/plink2.Lof11.afreq",header=T)
-Lof14_CDS_afreqs=read.table("data/afreqs_all_gadmor2_CDS/plink2.Lof14.afreq",header=T)
+Lof07_CDS_afreqs=read.table("empirical_data/afreqs_all_gadmor2_CDS/plink2.Lof07.afreq",header=T)
+Lof11_CDS_afreqs=read.table("empirical_data/afreqs_all_gadmor2_CDS/plink2.Lof11.afreq",header=T)
+Lof14_CDS_afreqs=read.table("empirical_data/afreqs_all_gadmor2_CDS/plink2.Lof14.afreq",header=T)
 Lof07_CDS_afreqs$Freq11=Lof11_CDS_afreqs$ALT_FREQS
 Lof07_CDS_afreqs$Freq14=Lof14_CDS_afreqs$ALT_FREQS
 Lof07_CDS_afreqs$FreqChange11=Lof07_CDS_afreqs$Freq11-Lof07_CDS_afreqs$ALT_FREQS
@@ -960,7 +961,7 @@ legend("topright",bty="n",inset=c(-0.2,0),legend=c(expression('ConvCor'[1]),expr
 axis(side=1,at=c(1.5,2,3,3.5,4.5,5,6,6.5,7.5,8),label=c("LG01 inversion","LG01 outside inversion","LG02 inversion","LG02 outside inversion","LG07 inversion","LG07 outside inversion","LG12 inversion","LG12 outside inversion","Coding SNPs","All SNPs"))
 
 
-### loci segregating across populations
+### How many loci are segregating across populations?
 Can40_afreqs=read.table("data/Can40Loci_afreqs/plink2.Can40.afreq",header=T)
 Can13_afreqs=read.table("data/Can40Loci_afreqs/plink2.Can13.afreq",header=T)
 Lof07_afreqs=read.table("data/Can40Loci_afreqs/plink2.Lof07.afreq",header=T)
@@ -997,7 +998,6 @@ length(intersect(segCan13,segLof11))/nrow(Can40_afreqs)
 length(intersect(segCan13,segLof14))/nrow(Can40_afreqs)
 
 length(Reduce(intersect,list(segCan13,segLof11,segLof14)))/nrow(Can40_afreqs)
-
 
 length(Reduce(intersect,list(segCan40,segCan13,segLof07,segLof11,segLof14)))
 length(Reduce(intersect,list(segCan40,segCan13,segLof07,segLof11,segLof14)))/nrow(Can40_afreqs)
