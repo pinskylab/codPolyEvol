@@ -6,13 +6,13 @@ Building upon previous work by [Pinsky et al. (2021)](https://doi.org/10.1073/pn
 
 The scripts provided here can be used to replicate the analysis. The basic workflow for this project consists of:
 
-1) Filtering the SNP dataset and calculating allele frequencies for each time point and location using vcftools and plink (link script).
+1) Filtering the SNP dataset and calculating allele frequencies for each time point and location using vcftools and plink using (these scripts)[https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/filtering_afreq_scripts.txt].
 
-2) Calculating allele frequency change and covariance in allele frequency change, bootstrapping over the whole genome and individual linkage groups to obtain confidence intervals, examining specific chromosomal subsets or regions (coding sequences / inversions), and plotting results using R (link R script). 
+2) Calculating allele frequency change and covariance in allele frequency change, bootstrapping over the whole genome and individual linkage groups to obtain confidence intervals, examining specific chromosomal subsets or regions (coding sequences / inversions), and plotting results using (R scripts) [https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/freqchange_convcor.R]. 
 
-3) Performing neutral simulations and a simulation incorporating deleterious mutations and QTL in SLiM (link SLiM scripts).
+3) Performing neutral simulations and a simulation incorporating deleterious mutations and QTL in SLiM using (these scripts)[https://github.com/pinskylab/codPolyEvol/tree/main/slim_code].
 
-4) Analyzing and visualizing simulated data using R (link sim R scripts).
+4) Analyzing and visualizing simulated data using R (separate scripts for (calculating covariance)[https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/slim_covcalc_maf.R], (Fst values)[https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/slim_fst_maf.R], and (mutation age vs prevalence)[https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/slim_mutationages.R]).
 
 Please feel free to get in touch with me if you have any questions!
 
