@@ -1,0 +1,34 @@
+## filtering by minimum genotype quality (GQ > 30) and assessing depth / missingness
+
+vfctools --gzvcf Historic_dataset_no_clip.vcf.gz_HF_GQ_HWE_MISS_IND_Kmer_VAR_Binom_No_Dam2.vcf.gz --minGQ 30 --recode cod_GQfilter 
+vcftools --vcf out.recode.vcf --missing-indv
+vcftools --vcf out.recode.vcf --depth
+
+
+## keep loci with max missingness 0.4 for Canada 1940 population only
+
+vcftools --vcf ../working_GQfilter/out.recode.vcf --keep ../popCan40.txt --max-missing 0.4 --recode
+vcftools --vcf out.recode.vcf --missing-indv
+vcftools --vcf out.recode.vcf --depth
+
+
+## extracts names of loci for the dataset created in the previous step
+
+sed -e '1,/#CHROM/ d' < out.recode.vcf | cut -d$'\t' -f 1-2 > Can40Loci
+
+
+## filter the GQ > 30 dataset by this set of loci for all populations
+
+vcftools --vcf ../working_GQfilter/out.recode.vcf --positions ../working_GQ_MM_Can40filter/Can40Loci --recode
+vcftools --vcf out.recode.vcf --missing-indv
+vcftools --vcf out.recode.vcf --depth
+
+
+### filtering with CDS .bed file
+
+vcftools --vcf out.recode.vcf --keep Gadus_morhua_CDS.bed --recode --out allloci_CDS
+
+
+#### calculating allele frequencies (alter VCF path as needed)
+
+./plink2 --allow-extra-chr --vcf data_2020.05.07/working_GQ_Can40Loci/out.recode.vcf --freq --pheno allpops.txt --loop-cats population
