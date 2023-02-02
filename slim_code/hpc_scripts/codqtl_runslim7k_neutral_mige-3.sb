@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH --nodes 1
+#SBATCH --ntasks-per-node 20
+#SBATCH --partition main
+#SBATCH --exclusive
+#SBATCH --time 72:00:00
+#SBATCH --mem-per-cpu 3000
+#SBATCH --job-name codqtl_runslim7k_neutral_mige-3
+#SBATCH --output codqtl_runslim7k_neutral_mige-3.txt
+
+python3 codqtl_runslim7k_neutral_mige-3.py

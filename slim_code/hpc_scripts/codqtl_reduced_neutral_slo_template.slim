@@ -1,0 +1,116 @@
+// Keywords: nonWF, non-Wright-Fisher, QTL, quantitative trait loci, fitness()
+
+// simulate polygenic adaptation in response to overfishing in a pair of cod-like populations
+// but for this template, only neutral evolution!
+// basic engine is from the SLiM evolutionary rescue template
+// demographic events and other parameters based on Matschiner et al. 2021
+// TMRCA for Atlantic cod = 57400 generations before split
+// NE/NW Atlantic split time = 6540 generations before present	
+	
+//	evolutionary rescue with quantitative variation
+initialize() {
+	initializeSLiMModelType("nonWF");
+	defineConstant("Tsplit", 57400); // time of population split / test time
+	defineConstant("Tdelta", 63930); // time of change in optimum / test time
+//	initializeMutationType("m1", 0.5, "n", 0.0, 1.0);  // QTL - can change distribution of effects
+	initializeMutationType("m2", 0.5, "f", 0.0);  // neutral mutations	
+	initializeGenomicElementType("g1", m2, 1); // set proportion of mutations that affect QTL as variable
+	initializeGenomicElement(g1, 0, 4999999); // one 5Mb chromosome
+	initializeMutationRate(1.64e-8); // fixed mutation rate for now
+	initializeRecombinationRate(1.5e-7); // fixed recomb rate for now
+}
+
+1 early() {
+	sim.setValue("K", K);
+	sim.setValue("m", m);
+//	sim.setValue("opt1", opt1);
+//	sim.setValue("opt2", opt2);
+	sim.setValue("simLof07file", simLof07file);
+	sim.setValue("simCan40file", simCan40file);
+	sim.setValue("simLof11file", simLof11file);
+	sim.setValue("simLof14file", simLof14file);
+	sim.setValue("simCan13file", simCan13file);
+	sim.setValue("simoutfile", simoutfile);
+//	sim.setValue("migoutfile", migoutfile);
+}
+
+reproduction() {
+         subpop.addCrossed(individual, subpop.sampleIndividuals(1));
+}
+
+1 early() {
+	sim.addSubpop("p1", K); // match to carrying capacity
+	sim.addSubpop("p2", 0); // empty subpop
+}
+
+early() {
+	// NO QTL-based fitness
+//	inds = sim.subpopulations.individuals;
+//	phenotypes = inds.sumOfMutationsOfType(m1);
+//	optimum = (sim.cycle < Tdelta) ? opt1 else opt2;
+//	deviations = optimum - phenotypes;
+//	fitnessFunctionMax = dnorm(0.0, 0.0, 5.0);
+//	adaptation = dnorm(deviations, 0.0, 5.0) / fitnessFunctionMax;
+//	inds.fitnessScaling = 0.1 + adaptation * 0.9;
+//	inds.tagF = phenotypes;   // just for output below
+	
+	// density-dependence with a maximum benefit at low density
+	// increasing K after split - gradually increases to 5x original K over 6540 generations
+	Kt = (sim.cycle < Tsplit) ? K else K + ((K*4)*((sim.cycle-57399)/6540));
+	p1.fitnessScaling = min(Kt / p1.individualCount, 1.5);
+	p2.fitnessScaling = min(Kt / p2.individualCount, 1.5);
+}
+//	mutationEffect(m1) { return 1.0; }
+
+late() {
+	if (p1.individualCount == 0)
+	{
+		// stop at extinction
+		catn("Extinction in generation " + sim.cycle + ".");
+		sim.simulationFinished();
+	}
+	else
+	{
+		// output the phenotypic mean and pop size
+//		phenotypes1 = p1.individuals.tagF;
+//		phenotypes2 = p2.individuals.tagF;
+		demouts = paste(sim.cycle,p1.individualCount,p2.individualCount);
+		writeFile(simoutfile,demouts,append=T);
+	}
+}
+
+57400 early() {
+	nMigrants = asInteger(K/2);
+	migrants=sample(sim.subpopulations.individuals, nMigrants);
+	for (migrant in migrants)
+ 		{
+ 		do dest = sample(sim.subpopulations, 1);
+ 		while (dest == migrant.subpopulation);
+ 		dest.takeMigrants(migrant);
+	}
+}
+
+early() {
+	nIndividuals = sum(sim.subpopulations.individualCount);
+	nMigrants = rpois(1, nIndividuals * m);
+	migrants = sample(sim.subpopulations.individuals, (sim.cycle < Tsplit) ? 0 else nMigrants);
+	for (migrant in migrants)
+		{
+ 		do dest = sample(sim.subpopulations, 1);
+ 		while (dest == migrant.subpopulation);
+ 		dest.takeMigrants(migrant);
+		}
+//	writeFile(migoutfile,length(migrants));
+}
+
+63925 late() { p1.outputVCFSample(20,filePath=simLof07file); }
+
+63930 late() { p2.outputVCFSample(20,filePath=simCan40file); }
+
+63940 late() { p1.outputVCFSample(20,filePath=simLof11file); }
+
+63940 late() { p1.outputVCFSample(20,filePath=simLof14file); }
+
+63940 late() { p2.outputVCFSample(20,filePath=simCan13file); }
+
+63940 late() { sim.simulationFinished(); } // true time

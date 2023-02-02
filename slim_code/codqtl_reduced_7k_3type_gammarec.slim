@@ -1,0 +1,131 @@
+// Keywords: nonWF, non-Wright-Fisher, QTL, quantitative trait loci, fitness()
+
+// simulate polygenic adaptation in response to overfishing in a pair of cod-like populations
+
+// basic engine is from the SLiM evolutionary rescue template
+// demographic events and other parameters based on Matschiner et al. 2021
+// TMRCA for Atlantic cod = 57400 generations before split
+// NE/NW Atlantic split time = 6540 generations before present
+// Ne = 50,000
+// Mu = 1.64x10-8
+// 
+
+initialize() {
+	initializeSLiMModelType("nonWF");
+	defineConstant("K", 7000); // can change carrying capacity / test pop size
+//	defineConstant("K", 50000); // can change carrying capacity / true pop size
+	defineConstant("m", 0.0001); // can change migration rate after split. can't set to zero but ok?
+	defineConstant("opt1", 0.0); // original phenotypic optimum
+	defineConstant("opt2", 0.0); // second phenotypic optimum
+	defineConstant("Tsplit", 57400); // time of population split / test time
+//	defineConstant("Tsplit", 57400); // time of population split / true time
+//	defineConstant("Tdelta", 63930); // time of change in optimum - 10 generations of selection (considering probably a reduction in generation time concomitant with selection) / true time
+	defineConstant("Tdelta", 63930); // time of change in optimum / test time
+	defineConstant("propQTL", 0.5); // proportion of mutations affecting phenotype
+	
+	
+//	evolutionary rescue with quantitative variation
+	initializeMutationType("m1", 0.5, "n", 0.0, 1.0);  // QTL - can change distribution of effects
+	initializeMutationType("m2", 0.5, "f", 0.0);  // neutral	
+	initializeMutationType("m3", 0, "g", -0.05, 0.5);  // deleterious recessive - gamma distribution
+	initializeGenomicElementType("g1",c(m1,m2,m3), c(1/3,1/3,1/3)); // three types equally likely
+//	initializeGenomicElementType("g1",m1,1); // all mutations affect trait
+	initializeGenomicElement(g1, 0, 4999999); // one 5Mb chromosome
+	initializeMutationRate(1.64e-8); // can change overall mutation rate
+	initializeRecombinationRate(1.5e-7); // can change recomb rate
+}
+
+reproduction() {
+	subpop.addCrossed(individual, subpop.sampleIndividuals(1));
+}
+1 early() {
+	sim.addSubpop("p1", K); // match to carrying capacity
+	sim.addSubpop("p2", 0); // nada
+}
+
+early() {
+	// QTL-based fitness
+	inds = sim.subpopulations.individuals;
+	phenotypes = inds.sumOfMutationsOfType(m1);
+	optimum = (sim.generation < Tdelta) ? opt1 else opt2;
+	deviations = optimum - phenotypes;
+	fitnessFunctionMax = dnorm(0.0, 0.0, 5.0);
+	adaptation = dnorm(deviations, 0.0, 5.0) / fitnessFunctionMax;
+	inds.fitnessScaling = 0.1 + adaptation * 0.9;
+	inds.tagF = phenotypes;   // just for output below
+	
+	// density-dependence with a maximum benefit at low density
+	// increasing K after split - gradually increases to 10x original K over 6540 generations
+	Kt = (sim.generation < Tsplit) ? K else K + ((K*4)*((sim.generation-57399)/6540));
+	p1.fitnessScaling = min(Kt / p1.individualCount, 1.5);
+	p2.fitnessScaling = min(Kt / p2.individualCount, 1.5);
+}
+
+fitness(m1) { return 1.0; }
+late() {
+	if (p1.individualCount == 0)
+	{
+		// stop at extinction
+		catn("Extinction in generation " + sim.generation + ".");
+		sim.simulationFinished();
+	}
+	else
+	{
+		// output the phenotypic mean and pop size
+		phenotypes = p1.individuals.tagF;
+		
+		cat(sim.generation + ": " + p1.individualCount + " individuals");
+		cat(", phenotype mean " + mean(phenotypes));
+		if (size(phenotypes) > 1)
+			cat(" (sd " + sd(phenotypes) + ")");
+		catn();
+	}
+}
+
+57400 early() {
+nMigrants = asInteger(K/2);
+migrants=sample(sim.subpopulations.individuals, nMigrants);
+for (migrant in migrants)
+ {
+ do dest = sample(sim.subpopulations, 1);
+ while (dest == migrant.subpopulation);
+
+ dest.takeMigrants(migrant);
+}
+}
+
+early() {
+ nIndividuals = sum(sim.subpopulations.individualCount);
+ nMigrants = rpois(1, nIndividuals * m);
+ migrants = sample(sim.subpopulations.individuals, (sim.generation < Tsplit) ? 0 else nMigrants);
+
+for (migrant in migrants)
+ {
+ do dest = sample(sim.subpopulations, 1);
+ while (dest == migrant.subpopulation);
+
+ dest.takeMigrants(migrant);
+}
+catn(length(migrants) + " migrants");
+}
+
+// add migration!!
+// add ghostie?
+
+//57400 { sim.addSubpopSplit("p2", 25000, p1); } // true time
+
+// 63925 late() { p1.outputVCFSample(20,filePath="simLof07.vcf"); }
+
+// 63930 late() { p2.outputVCFSample(20,filePath="simCan40.vcf"); }
+
+// 63940 late() { p1.outputVCFSample(20,filePath="simLof11.vcf"); }
+
+// 63940 late() { p1.outputVCFSample(20,filePath="simLof14.vcf"); }
+
+// 63940 late() { p2.outputVCFSample(20,filePath="simCan13.vcf"); }
+
+63930 late() { sim.outputFull(); }
+
+63940 late() { sim.simulationFinished(); } // test time
+
+// 63940 late() { sim.simulationFinished(); } // true time
