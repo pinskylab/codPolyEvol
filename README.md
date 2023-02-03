@@ -6,7 +6,7 @@ Building upon previous work by [Pinsky et al. (2021)](https://doi.org/10.1073/pn
 
 [empirical_data](https://github.com/pinskylab/codPolyEvol/tree/main/empirical_data) contains allele frequency data from historic and contemporary cod populations and some quality control data.
 
-[slim_code](https://github.com/pinskylab/codPolyEvol/tree/main/slim_code) contains code used to run simulations, and [slim_outputs] (https://github.com/pinskylab/codPolyEvol/tree/main/slim_outputs) contains summary outputs (allele frequencies and genetic divergences) from these simulations.
+[slim_code](https://github.com/pinskylab/codPolyEvol/tree/main/slim_code) contains code used to run simulations, and [slim_outputs](https://github.com/pinskylab/codPolyEvol/tree/main/slim_outputs) contains summary outputs (allele frequencies and genetic divergences) from these simulations.
 
 [analysis_scripts](https://github.com/pinskylab/codPolyEvol/tree/main/analysis_scripts) contains scripts that can be used to replicate the analysis. 
 
