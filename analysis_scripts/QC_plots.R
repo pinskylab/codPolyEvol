@@ -1,7 +1,7 @@
 par(mfrow=c(1,2))
 
-GQfilter=read.csv("data/GQFilter_missingness.csv",header=T)
-Can40filter=read.csv("data/Can40Filter_missingness.csv",header=T)
+GQfilter=read.csv("empirical_data/GQFilter_missingness.csv",header=T)
+Can40filter=read.csv("empirical_data/Can40Filter_missingness.csv",header=T)
 
 GQfilter$col=GQfilter$pop
 GQfilter$col=gsub("Can40","#F3C127",GQfilter$col)
