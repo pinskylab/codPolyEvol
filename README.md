@@ -4,7 +4,13 @@ Analysis scripts and processed data used in Reid, Star, and Pinsky 2023 (in revi
 
 Building upon previous work by [Pinsky et al. (2021)](https://doi.org/10.1073/pnas.2025453118), which used temporally-sampled whole genome data from cod to evaluate whether cod showed a loss of genetic diversity or evidence of adaptation at loci of large effect in response to heavy fishing pressure in the 20th century, this project applies a novel covariance-based method for detecting polygenic selection developed by [Buffalo and Coop (2020)](https://doi.org/10.1073/pnas.1919039117) to evaluate whether cod display evidence for parallel polygenic adaptation across the Atlantic. Simulations were also used to evaluate whether neutral processes (migration and drift) could replicate the covariance signal observed in the empirical data and whether background selection on shared deleterious variation or selection on shared quantitative trait loci (QTL) were plausible explanations for the patterns observed.
 
-The scripts provided here can be used to replicate the analysis. The basic workflow for this project consists of:
+[empirical_data](https://github.com/pinskylab/codPolyEvol/tree/main/empirical_data) contains allele frequency data from historic and contemporary cod populations and some quality control data.
+
+[slim_code](https://github.com/pinskylab/codPolyEvol/tree/main/slim_code) contains code used to run simulations, and [slim_outputs] (https://github.com/pinskylab/codPolyEvol/tree/main/slim_outputs) contains summary outputs (allele frequencies and genetic divergences) from these simulations.
+
+[analysis_scripts](https://github.com/pinskylab/codPolyEvol/tree/main/analysis_scripts) contains scripts that can be used to replicate the analysis. 
+
+The basic workflow for this project consists of:
 
 1) Filtering the SNP dataset and calculating allele frequencies for each time point and location using vcftools v.0.1.17 and plink v.2.0 using [these scripts](https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/filtering_afreq_scripts.txt).
 
