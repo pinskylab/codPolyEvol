@@ -2,6 +2,8 @@
 
 [You know, for analysis!](https://www.youtube.com/watch?v=7G5F8ObYgjI)
 
+[filtering_afreq_scripts.txt](https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/filtering_afreq_scripts.txt) contains a few lines of code used to filter datasets with vcftools and calculate allele frequencies with plink.
+
 [freqchange_convcor.R](https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/freqchange_convcor.R) crunches the empirical allele frequency data and can be used to re-create Fig. 2 and Supp Figures 2 + 3.
 
 [slim_covcalc_maf.R](https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/slim_covcalc_maf.R) crunches the simulated allele frequency data and can be used to re-create Figure 3.
