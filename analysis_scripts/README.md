@@ -9,3 +9,5 @@
 [slim_fst_maf.R](https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/slim_fst_maf.R) crunches the simulated Fst data and can be used to replicate Supp Figure 4.
 
 [slim_mutationages.R](https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/slim_mutationages.R) crunches data from the simulation containing QTL and deleterious variants and can be used to replicate Figure 5.
+
+[QC_plots.R](https://github.com/pinskylab/codPolyEvol/blob/main/analysis_scripts/QC_plots.R) crunches QC data and can be used to replicate Supp Figure 1.
